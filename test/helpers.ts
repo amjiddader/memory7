@@ -6,8 +6,13 @@ import { openDb } from '../src/core/db.js';
 import { Engine } from '../src/core/engine.js';
 import { detectProject } from '../src/core/project.js';
 
+/**
+ * A fresh temp dir in its canonical spelling. Must be `.native`: on Windows runners the temp dir is reported as
+ * C:\Users\RUNNER~1\... (8.3 short name) while memory7 resolves the real name C:\Users\runneradmin\...,
+ * and the plain JS realpath would keep the short one, so paths compared in tests would never match.
+ */
 export function tmp(prefix = 'memory7-'): string {
-  return realpathSync(mkdtempSync(join(tmpdir(), prefix)));
+  return realpathSync.native(mkdtempSync(join(tmpdir(), prefix)));
 }
 
 export function write(dir: string, rel: string, content: string): void {

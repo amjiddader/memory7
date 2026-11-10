@@ -1,6 +1,6 @@
 {
   "name": "memory7",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fast, local, low-token long-term memory for AI coding tools (Claude Code, Kiro, VS Code, Cursor, OpenCode) over MCP.",
   "author": "Amjid Dader <amjiddader@wansaw.com>",
   "repository": {
