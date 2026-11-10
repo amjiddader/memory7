@@ -1,0 +1,57 @@
+{
+  "name": "memory7",
+  "version": "0.1.0",
+  "description": "Fast, local, low-token long-term memory for AI coding tools (Claude Code, Kiro, VS Code, Cursor, OpenCode) over MCP.",
+  "author": "Amjid Dader <amjiddader@wansaw.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amjiddader/memory7.git"
+  },
+  "homepage": "https://github.com/amjiddader/memory7#readme",
+  "bugs": {
+    "url": "https://github.com/amjiddader/memory7/issues"
+  },
+  "type": "module",
+  "bin": {
+    "memory7": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "bench": "tsx bench/bench.ts",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "memory",
+    "ai",
+    "claude-code",
+    "kiro",
+    "cursor",
+    "vscode",
+    "opencode",
+    "sqlite",
+    "fts5"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@types/node": "^26.6.6",
+    "tsup": "^9.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0",
+    "zod": "^4.6.7"
+  }
+}
