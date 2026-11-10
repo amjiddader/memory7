@@ -4,3 +4,6 @@ dist/
 .memory7-test/
 coverage/
 .smoke/
+n.sh 
+*.sh 
+
