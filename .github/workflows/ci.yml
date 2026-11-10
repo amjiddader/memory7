@@ -23,16 +23,31 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      # the packed tarball must install and run on a clean prefix, like a user's machine
+      # Install the packed tarball into a folder inside the checkout and run the installed copy.
+      # Only relative paths are used: Git Bash on Windows rewrites absolute paths and PATH separators, which broke the old global-prefix version.
       - name: smoke test the packed package
         shell: bash
         run: |
+          set -euo pipefail
           npm pack --silent
-          PREFIX="$RUNNER_TEMP/prefix"
-          npm install -g --prefix "$PREFIX" ./memory7-*.tgz
-          export PATH="$PREFIX/bin:$PREFIX:$PATH"
-          export MEMORY7_HOME="$RUNNER_TEMP/m7home"
-          memory7 --version
-          memory7 doctor
-          memory7 add "I use ${{ runner.os }}" --global
-          memory7 search os
+          rm -rf .smoke
+          mkdir -p .smoke/app .smoke/home
+          cp memory7-*.tgz .smoke/app/memory7.tgz
+          cd .smoke/app
+          echo '{"name":"smoke-app","private":true,"version":"0.0.0"}' > package.json
+          npm install ./memory7.tgz --no-audit --no-fund
+          test -f node_modules/memory7/dist/index.js
+          export MEMORY7_HOME=../home
+          node node_modules/memory7/dist/index.js --version
+          npm exec -- memory7 --version
+          node node_modules/memory7/dist/index.js doctor
+          node node_modules/memory7/dist/index.js add "I use ${{ runner.os }}" --global
+          node node_modules/memory7/dist/index.js search os
+
+      - name: show what was installed (only on failure)
+        if: failure()
+        shell: bash
+        run: |
+          ls -la .smoke/app || true
+          ls -laR .smoke/app/node_modules/memory7 | head -60 || true
+          ls -la .smoke/app/node_modules/.bin || true

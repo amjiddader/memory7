@@ -3,3 +3,4 @@ dist/
 *.tgz
 .memory7-test/
 coverage/
+.smoke/
